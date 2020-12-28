@@ -4,11 +4,15 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
+import { CompetitionGrid } from './components/competition/CompetitionGrid';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
-import './custom.css'
+import 'devextreme/dist/css/dx.common.css';
+//import 'devextreme/dist/css/dx.light.css';
+
+import './components/styles/dx.generic.dark-moon-scheme.css';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -18,6 +22,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
+        <Route path='/competitions' component={CompetitionGrid} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
