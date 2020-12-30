@@ -1,44 +1,53 @@
-﻿import React, { Component } from 'react';
+﻿import React, { Component, useEffect, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, {
-    Column,
-    Grouping,
-    GroupPanel,
-    Pager,
-    Paging,
-    SearchPanel
-} from 'devextreme-react/data-grid';
+import DataGrid, { Column, Editing } from 'devextreme-react/data-grid';
+import { createStore } from 'devextreme-aspnet-data-nojquery';
 
-export class CompetitionGrid extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { competitions: [] };
+const url = 'api/Competition';
+
+export const CompetitionGrid = () => {
+    //const [competitions, setCompetitions] = useState([]);
+
+    const competitionData = createStore({
+        key: 'id',
+        loadUrl: `${url}/Get`,
+        updateUrl: `${url}/Update`,
+        insertUrl: `${url}/Add`,
+        deleteUrl: `${url}/Delete`,      
+    });
+
+    `String text ${expression}dffsfs`
+
+    const onRowUpdating = (row) => {
+        row.newData = Object.assign({}, row.oldData, row.newData);
     }
 
-    componentDidMount() {
-        this.loadCompetitions();
-    }
+    return (
+        <DataGrid
+            dataSource={competitionData}
+            focusedRowEnabled={true}
+            onRowUpdating={onRowUpdating}
+            showBorders={true}>
+            <Editing
+                mode="popup"
+                allowAdding={true}
+                allowUpdating={true}
+                allowDeleting={true}
+                useIcons={true} />
+            <Column dataField="name"></Column>
+            <Column dataField="type" visible={false}></Column>
+            <Column dataField="dateFrom" dataType="date" format="yyyy/MM/dd"></Column>
+            <Column dataField="dateTo" dataType="date" format="yyyy/MM/dd"></Column>
+            <Column dataField="description"></Column>
+            <Column dataField="teamCount"></Column>
+        </DataGrid>
+    );
+}
 
-    render() {
-        console.log(this.state.competitions);
-        return (
-            <DataGrid
-                dataSource={this.state.competitions}
-                showBorders={true}>
-                <Column dataField="name"></Column>
-                <Column dataField="dateFrom"></Column>
-                <Column dataField="dateTo"></Column>
-                <Column dataField="description"></Column>
-                <Column dataField="teamCount"></Column>
-            </DataGrid>   
-            );
-        
-    }
-
-    async loadCompetitions() {
+/*    
+ *    async loadCompetitions() {
         //const token = await authService.getAccessToken();
         const response = await fetch('api/Competition');
         const data = await response.json();
         this.setState({ competitions: data });
-    }
-}
+    }*/

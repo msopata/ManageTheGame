@@ -11,8 +11,7 @@ import { ApplicationPaths } from './components/api-authorization/ApiAuthorizatio
 
 import 'devextreme/dist/css/dx.common.css';
 //import 'devextreme/dist/css/dx.light.css';
-
-import './components/styles/dx.generic.dark-moon-scheme.css';
+import './themes/dx.generic.dark-moon-scheme.css';
 
 export default class App extends Component {
   static displayName = App.name;
