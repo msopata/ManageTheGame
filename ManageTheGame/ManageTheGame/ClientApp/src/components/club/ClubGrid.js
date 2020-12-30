@@ -3,12 +3,12 @@
 import DataGrid, { Column, Editing } from 'devextreme-react/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 
-const url = 'api/Competition';
+const url = 'api/Club';
 
-export const CompetitionGrid = () => {
+export const ClubGrid = () => {
     //const [competitions, setCompetitions] = useState([]);
 
-    const competitionData = createStore({
+    const clubData = createStore({
         key: 'id',
         loadUrl: `${url}/Get`,
         updateUrl: `${url}/Update`,
@@ -22,7 +22,7 @@ export const CompetitionGrid = () => {
 
     return (
         <DataGrid
-            dataSource={competitionData}
+            dataSource={clubData}
             focusedRowEnabled={true}
             onRowUpdating={onRowUpdating}
             showBorders={true}>
@@ -33,11 +33,9 @@ export const CompetitionGrid = () => {
                 allowDeleting={true}
                 useIcons={true} />
             <Column dataField="name"></Column>
-            <Column dataField="type" visible={false}></Column>
-            <Column dataField="dateFrom" dataType="date" format="yyyy/MM/dd"></Column>
-            <Column dataField="dateTo" dataType="date" format="yyyy/MM/dd"></Column>
+            <Column dataField="abbreviation"></Column>
+            <Column dataField="founded" dataType="date" format="yyyy/MM/dd"></Column>
             <Column dataField="description"></Column>
-            <Column dataField="teamCount"></Column>
         </DataGrid>
     );
 }

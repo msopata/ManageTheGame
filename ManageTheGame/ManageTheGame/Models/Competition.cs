@@ -14,6 +14,8 @@ namespace ManageTheGame.Models
         public int Type { get; set; }
         public string Description { get; set; }
         public int TeamCount { get; set; }
+        public bool Started { get; set; }
+        public List<Club> Clubs { get; set; }
 
     }
 }
