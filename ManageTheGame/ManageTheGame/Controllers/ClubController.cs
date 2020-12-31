@@ -27,6 +27,12 @@ namespace ManageTheGame.Controllers
             return _context.Clubs.ToList();
         }
 
+        [HttpGet("[action]/{Id}")]
+        public Club GetClubDetails(Guid Id)
+        {
+            return _context.Clubs.Where(x => x.Id == Id).FirstOrDefault<Club>();
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromForm] string values)
         {

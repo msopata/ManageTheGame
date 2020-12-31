@@ -17,14 +17,41 @@ namespace ManageTheGame.Controllers
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly ClubController _clubController;
+        private readonly CompetitionClubController _competitionClubController;
 
         public CompetitionController(ApplicationDbContext context)
         {
             _context = context;
+            _clubController = new ClubController(context);
+            _competitionClubController = new CompetitionClubController(context);
+        }
+
+        
+        [HttpGet("[action]")]
+        public IEnumerable<Competition> Get()
+        {
+            return _context.Competitions.ToList();
+ 
+        }
+
+        [HttpGet("[action]/{id}")]
+        public Competition GetCompetitionDetails(Guid Id)
+        {
+            var competition = _context.Competitions.Where(x => x.Id == Id)
+                                                    .FirstOrDefault<Competition>();
+            competition.Clubs = new List<Club>();
+            var clubs = _competitionClubController.GetClubs(competition.Id);
+            foreach (var club in clubs)
+            {
+                var clubDetails = _clubController.GetClubDetails(club.ClubId);
+                competition.Clubs.Add(clubDetails);
+            }
+            return competition;
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<Competition> Get()
+        public IEnumerable<Competition> GetClubs()
         {
             return _context.Competitions.ToList();
         }
