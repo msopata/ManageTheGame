@@ -28,7 +28,7 @@ namespace ManageTheGame.Controllers
         }
 
         
-        [HttpGet("[action]/id")]
+        [HttpGet("[action]/{id}")]
         public IEnumerable<CompetitionClub> GetClubs(Guid CompetitionId)
         {
             var result =  _context.CompetitionClubs.Where(x => x.CompetitionId == CompetitionId).ToList();
@@ -36,9 +36,9 @@ namespace ManageTheGame.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add([FromBody] string values)
+        public async Task<IActionResult> Add([FromBody] CompetitionClub request)
         {
-            var request = JsonConvert.DeserializeObject<CompetitionClub>(values);
+           // var request = JsonConvert.DeserializeObject<CompetitionClub>(values);
 
             if (request == null)
                 return BadRequest();
@@ -66,7 +66,7 @@ namespace ManageTheGame.Controllers
         }
 
         [HttpDelete("[action]")]
-        public IActionResult Delete([FromForm] Guid key)
+        public IActionResult Delete([FromBody] Guid key)
         {
             var existingCompetition = _context.CompetitionClubs.Where(x => x.Id == key)
                                                     .FirstOrDefault<CompetitionClub>();

@@ -21,8 +21,7 @@ export const CompetitionGrid = () => {
     }
 
     const onRowDblClick = (e) => {
-        //console.log(e);
-        history.push(`/competitions/${e.data.id}`);
+        history.push(`/competitions/${e.data.id}`, e.data);
     }
 
     return (

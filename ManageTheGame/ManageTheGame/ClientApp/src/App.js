@@ -6,6 +6,8 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { CompetitionGrid } from './components/competition/CompetitionGrid';
 import { CompetitionStartup } from './components/competition/CompetitionStartup';
+import { CompetitionStarted } from './components/competition/CompetitionStarted';
+import { CompetitionDetails } from './components/competition/CompetitionDetails';
 import { ClubGrid } from './components/club/ClubGrid';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
@@ -24,7 +26,7 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route exact path='/competitions' component={CompetitionGrid} />
-        <Route exact path='/competitions/:id' component={CompetitionStartup} />
+        <Route exact path='/competitions/:id' component={CompetitionDetails} />
         <Route path='/clubs' component={ClubGrid} />
         <AuthorizeRoute path='/fetch-data' component={FetchData} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
