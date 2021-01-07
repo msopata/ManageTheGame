@@ -15,14 +15,16 @@ export const FixtureGrid = (props) => {
         deleteUrl: `${url}/Delete`
     });
 
+    const onRowUpdating = (row) => {
+        row.newData = Object.assign({}, row.oldData, row.newData);
+    }
+
     return (
         <DataGrid
             dataSource={fixturesData}
             keyExpr="id"
-            //onRowInserted={onRowInserted}
+            onRowUpdating={onRowUpdating}
             focusedRowEnabled={true}
-            columnAutoWidth={true}
-            //onRowInserting={onRowInserting}
             showBorders={true}>
             <Editing
                 mode="popup"
@@ -31,11 +33,11 @@ export const FixtureGrid = (props) => {
                 allowUpdating={true}
                 useIcons={true} />
             <Paging pageSize={4} />
-            <Column dataField="date" caption="Date" dataType="date"></Column>
+            <Column dataField="date" caption="Date" dataType="date" format="yyyy/MM/dd" width={200}></Column>
             <Column dataField="gameweek" caption="GW" calculateDisplayValue={(e) => e.gameweek + 1} width={50} alignment="center"></Column>
             <Column dataField="home.name" caption="Home" alignment="right"></Column>
-            <Column dataField="homeGoals" caption=""></Column>
-            <Column dataField="awayGoals" caption="" alignment="left"></Column>
+            <Column dataField="homeGoals" caption="" alignment="center" width={50}></Column>
+            <Column dataField="awayGoals" caption="" alignment="center" width={50}></Column>
             <Column dataField="away.name" caption="Away"></Column>
         </DataGrid>
     );

@@ -15,12 +15,10 @@ namespace ManageTheGame.Controllers
     {
 
         private readonly ApplicationDbContext _context;
-        //private readonly CompetitionController _competitionController;
 
         public FixtureController(ApplicationDbContext context)
         {
             _context = context;
-            //_competitionController = new CompetitionController(context);
         }
 
         [HttpGet("[action]")]
@@ -56,6 +54,45 @@ namespace ManageTheGame.Controllers
             return fixtures.ToList();
         }
 
+        [HttpGet("[action]/{competitionId}")]
+        public IEnumerable<StandingsRow> GetStandings(Guid competitionId)
+        {
+            var standings = new List<StandingsRow>();
+            var fixtures = _context.Fixtures.Where(x => x.CompetitionId == competitionId);
+            var clubs = _context.CompetitionClubs.Where(x => x.CompetitionId == competitionId);
+
+            foreach( var club in clubs)
+            {
+                var name = _context.Clubs.Where(x => x.Id == club.ClubId).First().Name;
+                var row = new StandingsRow { Games = 0, GoalsConceded = 0, GoalsScored = 0, Points = 0, ClubName = name };
+                foreach( var fixture in fixtures.Where(x => (x.HomeId == club.ClubId || x.AwayId == club.ClubId) && x.Date > new DateTime(2000, 1, 1) ))
+                {
+                    row.Games++;
+                    if (fixture.HomeId == club.ClubId)
+                    {                        
+                        if (fixture.HomeGoals > fixture.AwayGoals)
+                            row.Points += 3;
+                        else if (fixture.HomeGoals == fixture.AwayGoals)
+                            row.Points++;
+                        row.GoalsScored += fixture.HomeGoals;
+                        row.GoalsConceded += fixture.AwayGoals;
+                    }
+
+                    if (fixture.AwayId == club.ClubId)
+                    {
+                        if (fixture.HomeGoals < fixture.AwayGoals)
+                            row.Points += 3;
+                        else if (fixture.HomeGoals == fixture.AwayGoals)
+                            row.Points++;
+                        row.GoalsScored += fixture.AwayGoals;
+                        row.GoalsConceded += fixture.HomeGoals;
+                    }
+                }
+                standings.Add(row);
+            }
+            return standings.OrderByDescending(x => x.Points).ThenByDescending(x => x.GoalsScored - x.GoalsConceded).ThenBy(x => x.Games);
+        }
+
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromForm] string values)
@@ -69,41 +106,6 @@ namespace ManageTheGame.Controllers
             await _context.Fixtures.AddAsync(fixture);
             await _context.SaveChangesAsync();
             return Ok();
-        }
-
-        public async Task<IActionResult> CreateCompetitionFixtures(Competition competition)
-        {
-
-            int[,] arr = new int[competition.TeamCount, competition.TeamCount];
-
-            if (competition.TeamCount % 2 == 0)
-                arr = GenerateRoundRobinEven(competition.TeamCount);
-            else
-                arr = GenerateRoundRobinOdd(competition.TeamCount);
-
-            for (int j = 0; j < arr.GetLength(0); j++)
-                for (int i = 0; i < arr.GetLength(1); i++)
-                {
-                    var fixture = new Fixture
-                    {
-                        HomeId = competition.Clubs[j].Id,
-                        AwayId = competition.Clubs[arr[j ,i]].Id,
-                        Gameweek = i,
-                        CompetitionId = competition.Id
-                    };
-                      
-                    bool exists = _context.Fixtures.Any(x => x.CompetitionId == competition.Id &&
-                                                        x.Gameweek == fixture.Gameweek &&
-                                                        (x.AwayId == fixture.HomeId || x.HomeId == fixture.AwayId));
-                    if (exists)
-                        continue;
-
-                    fixture.Id = Guid.NewGuid();
-                    await _context.Fixtures.AddAsync(fixture);
-                }
-
-            await _context.SaveChangesAsync();
-            return Ok(); 
         }
 
         [HttpPut("[action]")]
@@ -137,6 +139,42 @@ namespace ManageTheGame.Controllers
                 return NotFound();
             _context.Remove(fixture);
             _context.SaveChanges();
+            return Ok();
+        }
+
+        //Function responsible for creating list of fixtures based on competition list teams with RoundRobin algorithm
+        public async Task<IActionResult> CreateCompetitionFixtures(Competition competition)
+        {
+
+            int[,] arr = new int[competition.TeamCount, competition.TeamCount];
+
+            if (competition.TeamCount % 2 == 0)
+                arr = GenerateRoundRobinEven(competition.TeamCount);
+            else
+                arr = GenerateRoundRobinOdd(competition.TeamCount);
+
+            for (int j = 0; j < arr.GetLength(0); j++)
+                for (int i = 0; i < arr.GetLength(1); i++)
+                {
+                    var fixture = new Fixture
+                    {
+                        HomeId = competition.Clubs[j].Id,
+                        AwayId = competition.Clubs[arr[j, i]].Id,
+                        Gameweek = i,
+                        CompetitionId = competition.Id
+                    };
+
+                    bool exists = _context.Fixtures.Any(x => x.CompetitionId == competition.Id &&
+                                                        x.Gameweek == fixture.Gameweek &&
+                                                        (x.AwayId == fixture.HomeId || x.HomeId == fixture.AwayId));
+                    if (exists)
+                        continue;
+
+                    fixture.Id = Guid.NewGuid();
+                    await _context.Fixtures.AddAsync(fixture);
+                    await _context.SaveChangesAsync();
+                }
+
             return Ok();
         }
 
