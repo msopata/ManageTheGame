@@ -19,12 +19,14 @@ namespace ManageTheGame.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ClubController _clubController;
         private readonly CompetitionClubController _competitionClubController;
+        private readonly FixtureController _fixtureController;
 
         public CompetitionController(ApplicationDbContext context)
         {
             _context = context;
             _clubController = new ClubController(context);
             _competitionClubController = new CompetitionClubController(context);
+            _fixtureController = new FixtureController(context);
         }
 
         
@@ -91,17 +93,17 @@ namespace ManageTheGame.Controllers
         }
 
         [HttpPut("[action]/{id}")]
-        public IActionResult UpdateCompetitionStart(Guid id)
+        public async Task<IActionResult> UpdateCompetitionStart(Guid id)
         {
-            //var competition = JsonConvert.DeserializeObject<Competition>(values);
-            var existingCompetition = _context.Competitions.Where(x => x.Id == id)
-                                                    .FirstOrDefault<Competition>();
+            var competition = GetCompetitionDetails(id);
 
-            if (existingCompetition == null)
+            if (competition == null)
                 return NotFound();
 
-            existingCompetition.Started = true;
-            _context.SaveChanges();
+            await _fixtureController.CreateCompetitionFixtures(competition);
+
+            competition.Started = true;
+            await _context.SaveChangesAsync();
             return Ok();
         }
 

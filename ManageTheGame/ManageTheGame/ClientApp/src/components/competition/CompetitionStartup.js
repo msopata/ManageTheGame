@@ -10,9 +10,11 @@ import { data } from 'jquery';
 export const CompetitionStartup = (props) => {
     let dataGridRef = useRef();
     const [competition, setCompetition] = useState({});
+
     useEffect(() => {
         loadCompetitionDetails();
     }, []);
+
 
     const clubLookupData = createStore({
         key: 'id',
@@ -24,6 +26,7 @@ export const CompetitionStartup = (props) => {
         const response = await fetch(`api/Competition/GetCompetitionDetails/${props.competitionId}`);
         const data = await response.json();
         setCompetition(data);
+        console.log(competition);
     }
 
     const onRowInserting = (e) => {
@@ -41,7 +44,6 @@ export const CompetitionStartup = (props) => {
     const startCompetition = async (competitionId) => {
         await fetch(`api/Competition/UpdateCompetitionStart/${competitionId}`, {
             method: "PUT",
-            //body: JSON.stringify(data),
             headers: {
                 "Content-type": "application/json"
             }
@@ -51,6 +53,7 @@ export const CompetitionStartup = (props) => {
 
     const onCompetitionStartBtnClick = () => {
         startCompetition(props.competitionId);
+        //refresh/reload
     }
 
 

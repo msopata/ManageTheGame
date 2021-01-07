@@ -15,18 +15,45 @@ namespace ManageTheGame.Controllers
     {
 
         private readonly ApplicationDbContext _context;
-        private readonly CompetitionController _competitionController;
+        //private readonly CompetitionController _competitionController;
 
         public FixtureController(ApplicationDbContext context)
         {
             _context = context;
-            _competitionController = new CompetitionController(context);
+            //_competitionController = new CompetitionController(context);
         }
 
         [HttpGet("[action]")]
         public IEnumerable<Fixture> Get()
         {
             return _context.Fixtures.ToList();
+        }
+
+        [HttpGet("[action]/{id}")]
+        public IEnumerable<Fixture> GetCompetitionFixtures(Guid id)
+        {
+
+            var fixtures = _context.Fixtures.Where(x => x.CompetitionId == id).OrderBy(x => x.Gameweek);
+
+            foreach( var fixture in fixtures)
+            {
+                var home = _context.Clubs.Where(x => x.Id == fixture.HomeId).FirstOrDefault();
+                var away = _context.Clubs.Where(x => x.Id == fixture.AwayId).FirstOrDefault();
+
+                fixture.Home = new Club
+                {
+                    Name = home.Name,
+                    Abbreviation = home.Abbreviation
+                };
+
+                fixture.Away = new Club
+                {
+                    Name = away.Name,
+                    Abbreviation = away.Abbreviation
+                };
+            }
+
+            return fixtures.ToList();
         }
 
 
@@ -44,12 +71,8 @@ namespace ManageTheGame.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> CreateCompetitionFixtures(Guid CompetitionId)
+        public async Task<IActionResult> CreateCompetitionFixtures(Competition competition)
         {
-            var competition = _competitionController.GetCompetitionDetails(CompetitionId);
-
-            if (competition == null)
-                return NotFound();
 
             int[,] arr = new int[competition.TeamCount, competition.TeamCount];
 
@@ -66,32 +89,21 @@ namespace ManageTheGame.Controllers
                         HomeId = competition.Clubs[j].Id,
                         AwayId = competition.Clubs[arr[j ,i]].Id,
                         Gameweek = i,
-                        CompetitionId = CompetitionId
+                        CompetitionId = competition.Id
                     };
-
-                    bool exists = _context.Fixtures.Any(x => x.CompetitionId == CompetitionId &&
+                      
+                    bool exists = _context.Fixtures.Any(x => x.CompetitionId == competition.Id &&
                                                         x.Gameweek == fixture.Gameweek &&
-                                                        x.AwayId == fixture.HomeId);
-                    if (!exists)
-                    {
-                        fixture.Id = Guid.NewGuid();
-                        await _context.Fixtures.AddAsync(fixture);
-                    }
-                    else
+                                                        (x.AwayId == fixture.HomeId || x.HomeId == fixture.AwayId));
+                    if (exists)
                         continue;
+
+                    fixture.Id = Guid.NewGuid();
+                    await _context.Fixtures.AddAsync(fixture);
                 }
 
             await _context.SaveChangesAsync();
             return Ok(); 
-        }
-
-
-
-        public async void AddOnCompetitionStart(Fixture fixture)
-        {
-            fixture.Id = Guid.NewGuid();
-            await _context.Fixtures.AddAsync(fixture);
-            await _context.SaveChangesAsync();
         }
 
         [HttpPut("[action]")]

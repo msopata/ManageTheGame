@@ -29,10 +29,9 @@ namespace ManageTheGame.Controllers
 
         
         [HttpGet("[action]/{id}")]
-        public IEnumerable<CompetitionClub> GetClubs(Guid CompetitionId)
+        public IEnumerable<CompetitionClub> GetClubs(Guid id)
         {
-            var result =  _context.CompetitionClubs.Where(x => x.CompetitionId == CompetitionId).ToList();
-            return result;
+            return  _context.CompetitionClubs.Where(x => x.CompetitionId == id).ToList();
         }
 
         [HttpPost("[action]")]

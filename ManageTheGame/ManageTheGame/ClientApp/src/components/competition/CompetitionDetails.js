@@ -19,11 +19,3 @@ export const CompetitionDetails = (props) => {
             <CompetitionStartup competitionId={props.location.state.id} />
     );
 }
-
-/*    
- *    async loadCompetitions() {
-        //const token = await authService.getAccessToken();
-        const response = await fetch('api/Competition');
-        const data = await response.json();
-        this.setState({ competitions: data });
-    }*/

@@ -1,8 +1,9 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 import TabPanel from 'devextreme-react/tab-panel'
+import { FixtureGrid } from '../fixtures/FixtureGrid'
 //const url = 'api/CompetitionCLub';
 
-export const CompetitionStarted = () => {
+export const CompetitionStarted = (props) => {
     const renderTab = (e) => {
         switch (e.index) {
             case 0:
@@ -13,8 +14,8 @@ export const CompetitionStarted = () => {
                 );
             case 1:
                 return (
-                   <div>
-                       "Fixtures"
+                    <div>
+                        <FixtureGrid competitionId={props.competitionId} />
                    </div>
                 );
             case 2:
