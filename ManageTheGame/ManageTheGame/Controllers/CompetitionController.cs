@@ -90,6 +90,21 @@ namespace ManageTheGame.Controllers
             return Ok();
         }
 
+        [HttpPut("[action]/{id}")]
+        public IActionResult UpdateCompetitionStart(Guid id)
+        {
+            //var competition = JsonConvert.DeserializeObject<Competition>(values);
+            var existingCompetition = _context.Competitions.Where(x => x.Id == id)
+                                                    .FirstOrDefault<Competition>();
+
+            if (existingCompetition == null)
+                return NotFound();
+
+            existingCompetition.Started = true;
+            _context.SaveChanges();
+            return Ok();
+        }
+
         [HttpDelete("[action]")]
         public IActionResult Delete([FromForm] Guid key)
         {

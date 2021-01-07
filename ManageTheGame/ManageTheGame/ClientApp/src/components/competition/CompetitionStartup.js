@@ -4,6 +4,7 @@ import DataGrid, { Column, Editing, Lookup } from 'devextreme-react/data-grid';
 import { Button } from 'devextreme-react/button'
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 import { useHistory } from "react-router-dom";
+import { data } from 'jquery';
 //const url = 'api/CompetitionCLub';
 
 export const CompetitionStartup = (props) => {
@@ -37,22 +38,19 @@ export const CompetitionStartup = (props) => {
         setTimeout(e.component.refresh, 1000);
     }
 
-    const onRowRemoving = async (e) => {
-        console.log(competition)
-        /*
-        await fetch(`api/CompetitionClub/Delete`, {
-            method: "DELETE",
-            body: JSON.stringify({ "key": e.key }),
+    const startCompetition = async (competitionId) => {
+        await fetch(`api/Competition/UpdateCompetitionStart/${competitionId}`, {
+            method: "PUT",
+            //body: JSON.stringify(data),
             headers: {
                 "Content-type": "application/json"
             }
         })
-            .then(result => console.log(result));
-            */
+        .then(result => console.log(result));  
     }
 
-    const startCompetition = () => {
-        console.log("start");
+    const onCompetitionStartBtnClick = () => {
+        startCompetition(props.competitionId);
     }
 
 
@@ -82,7 +80,6 @@ export const CompetitionStartup = (props) => {
                 onRowInserted={onRowInserted}
                 focusedRowEnabled={true}
                 onRowInserting={onRowInserting}
-                onRowRemoving={onRowRemoving}
                 showBorders={true}>
                 <Editing
                     allowAdding={true}
@@ -98,7 +95,7 @@ export const CompetitionStartup = (props) => {
                 <Column dataField="abbreviation"></Column>
             </DataGrid>
             <br />
-            <Button onClick={startCompetition} text="Draw fixtures and start" />
+            <Button onClick={onCompetitionStartBtnClick} text="Draw fixtures and start" useSubmitBehavior={true} />
         </div>
     );
 }
