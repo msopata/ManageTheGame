@@ -15,8 +15,13 @@ export const FixtureGrid = (props) => {
         deleteUrl: `${url}/Delete`
     });
 
+    useEffect(() => {
+        props.updateStandingsGrid(false);
+    }, []);
+
     const onRowUpdating = (row) => {
         row.newData = Object.assign({}, row.oldData, row.newData);
+        props.updateStandingsGrid(true);
     }
 
     return (

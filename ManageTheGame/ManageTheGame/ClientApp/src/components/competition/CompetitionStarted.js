@@ -5,6 +5,7 @@ import { StandingsGrid } from '../standings/StandingsGrid'
 //const url = 'api/CompetitionCLub';
 
 export const CompetitionStarted = (props) => {
+    const [standingsGridUpdated, updateStandingsGrid] = useState(false);
     const renderTab = (e) => {
         switch (e.index) {
             case 0:
@@ -15,8 +16,8 @@ export const CompetitionStarted = (props) => {
                 );
             case 1:
                 return (
-                   <div>
-                        <FixtureGrid competitionId={props.competitionId} />
+                    <div>
+                        <FixtureGrid competitionId={props.competitionId} updateStandingsGrid={updateStandingsGrid} />
                    </div>
                 );
             case 2:

@@ -1,6 +1,6 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, { Column, Editing } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Editing, Popup } from 'devextreme-react/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 
 const url = 'api/Club';
