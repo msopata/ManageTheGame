@@ -36,13 +36,86 @@ namespace ManageTheGame.Controllers
         [HttpGet("[action]/{Id}")]
         public IEnumerable<Fixture> GetFixtures(Guid Id)
         {
-            return _context.Fixtures.Where(x => x.HomeId == Id || x.AwayId == Id).ToList();
+            var fixtures = _context.Fixtures.Where(x => x.HomeId == Id || x.AwayId == Id).OrderByDescending(x => x.Date).ToList();
+            foreach (var fixture in fixtures)
+            {
+                var home = _context.Clubs.Where(x => x.Id == fixture.HomeId).FirstOrDefault();
+                var away = _context.Clubs.Where(x => x.Id == fixture.AwayId).FirstOrDefault();
+                var competition = _context.Competitions.Where(x => x.Id == fixture.CompetitionId).FirstOrDefault();
+
+                fixture.Home = new Club
+                {
+                    Name = home.Name,
+                    Abbreviation = home.Abbreviation
+                };
+
+                fixture.Away = new Club
+                {
+                    Name = away.Name,
+                    Abbreviation = away.Abbreviation
+                };
+
+                fixture.Competition = new Competition
+                {
+                    Name = competition.Name
+                };
+            }
+            return fixtures;
         }
+
+
 
         [HttpGet("[action]/{Id}")]
         public IEnumerable<Player> GetPlayers(Guid Id)
         {
             return _context.Players.Where(x => x.ClubId == Id).ToList();
+        }
+
+        [HttpGet("[action]/{Id}")]
+        public IEnumerable<PlayerStatsRow> GetStats(Guid Id)
+        {
+            var players = GetPlayers(Id);
+            var playerStatsList = new List<PlayerStatsRow>();
+            foreach( var player in players)
+            {
+                var stats = _context.Stats.Where(x => x.PlayerId == player.Id).ToList();
+                var playerStat = new PlayerStatsRow { 
+                    FirstName = player.FirstName,
+                    LastName = player.LastName,
+                    Games = stats.Count,
+                    Goals = 0,
+                    Assists = 0,
+                    MVP = 0,
+                    YellowCards = 0,
+                    RedCards = 0
+                };
+                foreach(var stat in stats)
+                    switch (stat.Type)
+                    {
+                        case 1:
+                            break;
+                        case 2:
+                            playerStat.Goals++;
+                            break;
+                        case 3:
+                            playerStat.Assists++;
+                            break;
+                        case 4:
+                            playerStat.YellowCards++;
+                            break;
+                        case 5:
+                            playerStat.RedCards++;
+                            break;
+                        case 6:
+                            playerStat.RedCards++;
+                            break;
+                        default:
+                            break;
+                    }   
+
+                playerStatsList.Add(playerStat);
+            }
+            return playerStatsList;
         }
 
         [HttpPost("[action]")]

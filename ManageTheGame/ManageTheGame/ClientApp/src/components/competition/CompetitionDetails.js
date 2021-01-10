@@ -15,7 +15,7 @@ export const CompetitionDetails = (props) => {
 
     return (
         (props.location.state.started) ?
-            <CompetitionStarted competitionId={props.location.state.id} /> :
+            <CompetitionStarted competitionId={props.location.state.id} teamCount={props.location.state.teamCount} /> :
             <CompetitionStartup competitionId={props.location.state.id} />
     );
 }

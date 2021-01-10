@@ -17,7 +17,11 @@ export const CompetitionStarted = (props) => {
             case 1:
                 return (
                     <div>
-                        <FixtureGrid competitionId={props.competitionId} updateStandingsGrid={updateStandingsGrid} />
+                        <FixtureGrid
+                            competitionId={props.competitionId}
+                            updateStandingsGrid={updateStandingsGrid}
+                            teamCount={props.teamCount}
+                        />
                    </div>
                 );
             case 2:

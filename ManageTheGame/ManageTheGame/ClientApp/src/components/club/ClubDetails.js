@@ -2,6 +2,7 @@
 import TabPanel from 'devextreme-react/tab-panel'
 import { FixtureTab } from './tabs/FixtureTab'
 import { PlayerTab } from './tabs/PlayerTab';
+import { StatsTab } from './tabs/StatsTab';
 //const url = 'api/CompetitionCLub';
 
 export const ClubDetails = (props) => {
@@ -21,8 +22,8 @@ export const ClubDetails = (props) => {
                 );
             case 2:
                 return (
-                   <div>
-                        "Stats"
+                    <div>
+                        <StatsTab clubId={props.location.state.id} />
                    </div>
                 );
         }

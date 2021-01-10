@@ -18,6 +18,7 @@ namespace ManageTheGame.Data
         public DbSet<CompetitionClub> CompetitionClubs { get; set; }
         public DbSet<Fixture> Fixtures { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Stat> Stats { get; set; }
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
