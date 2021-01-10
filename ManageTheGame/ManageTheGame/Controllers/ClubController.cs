@@ -33,6 +33,18 @@ namespace ManageTheGame.Controllers
             return _context.Clubs.Where(x => x.Id == Id).FirstOrDefault<Club>();
         }
 
+        [HttpGet("[action]/{Id}")]
+        public IEnumerable<Fixture> GetFixtures(Guid Id)
+        {
+            return _context.Fixtures.Where(x => x.HomeId == Id || x.AwayId == Id).ToList();
+        }
+
+        [HttpGet("[action]/{Id}")]
+        public IEnumerable<Player> GetPlayers(Guid Id)
+        {
+            return _context.Players.Where(x => x.ClubId == Id).ToList();
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Add([FromForm] string values)
         {

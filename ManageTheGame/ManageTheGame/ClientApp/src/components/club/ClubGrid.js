@@ -2,12 +2,13 @@
 //import authService from './api-authorization/AuthorizeService';
 import DataGrid, { Column, Editing, Popup } from 'devextreme-react/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
+import { useHistory } from 'react-router-dom';
 
 const url = 'api/Club';
 
 export const ClubGrid = () => {
     //const [competitions, setCompetitions] = useState([]);
-
+    let history = useHistory();
     const clubData = createStore({
         key: 'id',
         loadUrl: `${url}/Get`,
@@ -20,10 +21,15 @@ export const ClubGrid = () => {
         row.newData = Object.assign({}, row.oldData, row.newData);
     }
 
+    const onRowDblClick = (e) => {
+        history.push(`/clubs/${e.data.id}`, e.data);
+    }
+
     return (
         <DataGrid
             dataSource={clubData}
             focusedRowEnabled={true}
+            onRowDblClick={onRowDblClick}
             onRowUpdating={onRowUpdating}
             showBorders={true}>
             <Editing

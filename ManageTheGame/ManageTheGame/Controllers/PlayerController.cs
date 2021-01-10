@@ -27,8 +27,8 @@ namespace ManageTheGame.Controllers
             return _context.Players.ToList();
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Add([FromForm] string values)
+        [HttpPost("[action]/{ClubId}")]
+        public async Task<IActionResult> Add(Guid ClubId, [FromForm] string values)
         {
             var player = JsonConvert.DeserializeObject<Player>(values);
 
@@ -36,6 +36,7 @@ namespace ManageTheGame.Controllers
                 return BadRequest();
 
             player.Id = Guid.NewGuid();
+            player.ClubId = ClubId;
             await _context.Players.AddAsync(player);
             await _context.SaveChangesAsync();
             return Ok();
