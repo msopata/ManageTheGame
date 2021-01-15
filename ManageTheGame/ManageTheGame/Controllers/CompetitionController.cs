@@ -42,13 +42,13 @@ namespace ManageTheGame.Controllers
         {
             var competition = _context.Competitions.Where(x => x.Id == Id)
                                                     .FirstOrDefault<Competition>();
-            competition.Clubs = new List<Club>();
-            var clubs = _competitionClubController.GetClubs(competition.Id);
+            //competition.Clubs = new List<Club>();
+            /*8var clubs = _competitionClubController.GetClubs(competition.Id);
             foreach (var club in clubs)
             {
                 var clubDetails = _clubController.GetClubDetails(club.ClubId);
                 competition.Clubs.Add(clubDetails);
-            }
+            }*/
             return competition;
         }
 

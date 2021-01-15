@@ -66,7 +66,7 @@ export const SquadTab = (props) => {
                 <h1>{props.home}</h1>
                 <DataGrid
                     dataSource={homePlayers.datasource}
-                    width={'50%'}
+                    width={'70%'}
                     onRowInserting={onRowInserting}
                     onRowInserted={onRowInserted}
                     noDataText=""
@@ -82,6 +82,7 @@ export const SquadTab = (props) => {
                             displayExpr="lastName"
                         />
                     </Column>
+                    <Column dataField="player.number" caption="No." width={50}></Column>
                     <Column dataField="type" visible={false}></Column>
                     <Column dataField="minute" visible={false}></Column>
                 </DataGrid>
@@ -93,7 +94,7 @@ export const SquadTab = (props) => {
                     onRowInserting={onRowInserting}
                     onRowInserted={onRowInserted}
                     noDataText=""
-                    width={'50%'}
+                    width={'70%'}
                     showBorders={true}>
                     <Editing
                         allowAdding={true}
@@ -106,6 +107,7 @@ export const SquadTab = (props) => {
                             displayExpr="lastName"
                         />
                     </Column>
+                    <Column dataField="player.number" caption="No." width={50}></Column>
                     <Column dataField="type" visible={false}></Column>
                     <Column dataField="minute" visible={false}></Column>
                 </DataGrid>

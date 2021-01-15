@@ -44,6 +44,7 @@ export const StatsGrid = (props) => {
                 return (
                     <div>
                         <StatisticsTab
+                            fixtureId={props.location.state.id}
                             data={statsData}
                             homeId={props.location.state.homeId}
                             home={props.location.state.home.name}
