@@ -2,11 +2,8 @@
 //import authService from './api-authorization/AuthorizeService';
 import DataGrid, { Column, Editing, Lookup, Paging, MasterDetail } from 'devextreme-react/data-grid';
 import TabPanel from 'devextreme-react/tab-panel'
-import { Button } from 'devextreme-react/button'
-import { createStore } from 'devextreme-aspnet-data-nojquery';
 import { SquadTab } from './tabs/SquadTab';
 import { StatisticsTab } from './tabs/StatisticsTab';
-import { data } from 'jquery';
 const url = 'api/Stats';
 
 export const StatsGrid = (props) => {
@@ -20,9 +17,11 @@ export const StatsGrid = (props) => {
     const loadStats = async (fixtureId) => {
         const response = await fetch(`${url}/GetFixtureStats/${fixtureId}`);
         const data = await response.json();
-        const squads = data.filter(x => x.Type == 1);
+        const squads = data.filter(x => x.type == 1);
+        console.log("data", data);
+        console.log("squads", squads);
         setSquadsData(squads);
-        const stats = data.filter(x => x.Type > 1);
+        const stats = data.filter(x => x.type > 1);
         setStatsData(stats);
     }
 
@@ -31,13 +30,26 @@ export const StatsGrid = (props) => {
             case 0:
                 return (
                     <div>
-                        <SquadTab data={squadData} />
+                        <SquadTab
+                            fixtureId={props.location.state.id}
+                            data={squadData}
+                            homeId={props.location.state.homeId}
+                            home={props.location.state.home.name}
+                            awayId={props.location.state.awayId}
+                            away={props.location.state.away.name}
+                        />
                     </div>
                 );
             case 1:
                 return (
                     <div>
-                        <StatisticsTab data={statsData} />
+                        <StatisticsTab
+                            data={statsData}
+                            homeId={props.location.state.homeId}
+                            home={props.location.state.home.name}
+                            awayId={props.location.state.awayId}
+                            away={props.location.state.away.name}
+                        />
                     </div>
                 );
         }

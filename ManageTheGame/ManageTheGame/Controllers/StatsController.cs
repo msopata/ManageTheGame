@@ -30,19 +30,30 @@ namespace ManageTheGame.Controllers
         [HttpGet("[action]/{fixtureId}")]
         public IEnumerable<Stat> GetFixtureStats(Guid fixtureId)
         {
-            return _context.Stats.Where(x => x.FixtureId == fixtureId).ToArray();
+            var stats =  _context.Stats.Where(x => x.FixtureId == fixtureId).ToArray();
+            foreach(var item in stats)
+            {
+                var player = _context.Players.Where(x => x.Id == item.PlayerId).First();
+                item.Player = new Player
+                {
+                    FirstName = player.FirstName,
+                    LastName = player.LastName,
+                    Number = player.Number,
+                    ClubId = player.ClubId
+                };
+            }
+
+            return stats;
         }
 
-        [HttpPost("[action]/")]
-        public async Task<IActionResult> Add([FromForm] string values)
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Add([FromBody] Stat request)
         {
-            var stat = JsonConvert.DeserializeObject<Stat>(values);
-
-            if (stat == null)
+            if (request == null)
                 return BadRequest();
 
-            stat.Id = Guid.NewGuid();
-            await _context.Stats.AddAsync(stat);
+            request.Id = Guid.NewGuid();
+            await _context.Stats.AddAsync(request);
             await _context.SaveChangesAsync();
             return Ok();
         }

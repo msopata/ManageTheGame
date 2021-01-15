@@ -53,7 +53,6 @@ export const CompetitionStartup = (props) => {
 
     const onCompetitionStartBtnClick = () => {
         startCompetition(props.competitionId);
-        //refresh/reload
     }
 
 

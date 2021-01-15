@@ -1,0 +1,16 @@
+﻿.squad-tab-main {
+    display: flex;
+    background-color: #465672;
+    justify-content: center;
+}
+
+
+.squad-tab-left {
+    flex: 1;
+    margin-left: 150px;
+}
+
+.squad-tab-right {
+    margin-left: 50px;
+    flex: 1;
+}
