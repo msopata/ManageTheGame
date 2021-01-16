@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace ManageTheGame.Models
         public string Description { get; set; }
         public int TeamCount { get; set; }
         public bool Started { get; set; }
+        [NotMapped]
         public List<Club> Clubs { get; set; }
 
     }
