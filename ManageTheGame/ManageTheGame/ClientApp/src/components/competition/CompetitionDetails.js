@@ -9,10 +9,6 @@ const url = 'api/Competition';
 
 export const CompetitionDetails = (props) => {
 
-    useEffect(() => {
-        console.log(props);
-    }, []);
-
     return (
         (props.location.state.started) ?
             <CompetitionStarted competitionId={props.location.state.id} teamCount={props.location.state.teamCount} /> :

@@ -1,7 +1,6 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
 import DataGrid, { Column, Lookup, Editing } from 'devextreme-react/data-grid';
-const url = 'api/Player';
 
 export const StatisticsTab = (props) => {
     const [homePlayers, setHomePlayers] = useState({ lookup: [], datasource: [] });
@@ -9,10 +8,10 @@ export const StatisticsTab = (props) => {
 
     const lookupItems =
         [
-            { value: 2, text: "goal" },
-            { value: 3, text: "assist" },
-            { value: 4, text: "yellow card" },
-            { value: 5, text: "red card" },
+            { value: 2, text: "Goal" },
+            { value: 3, text: "Assist" },
+            { value: 4, text: "Yellow card" },
+            { value: 5, text: "Red card" },
             { value: 6, text: "MVP" }
         ];
 
@@ -49,7 +48,7 @@ export const StatisticsTab = (props) => {
             "fixtureId": props.fixtureId,
             "playerId": e.data.playerId,
             "type": e.data.type,
-            "minute": e.data.minute
+            "minute": parseInt(e.data.minute)
         }
         addStatsData(data);
     }
@@ -93,7 +92,7 @@ export const StatisticsTab = (props) => {
                             displayExpr="text"
                         />
                     </Column>
-                    <Column dataField="minute" width={50}></Column>
+                    <Column dataField="minute" width={50} dataType="Number" caption="Min." alignment="center"></Column>
                 </DataGrid>
             </div>
             <div className='squad-tab-right'>
@@ -122,7 +121,7 @@ export const StatisticsTab = (props) => {
                             displayExpr="text"
                         />
                     </Column>
-                    <Column dataField="minute" width={ 50}></Column>
+                    <Column dataField="minute" width={50} dataType="Number" caption="Min." alignment="center"></Column>
                 </DataGrid>
             </div>
         </div>

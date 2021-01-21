@@ -82,7 +82,7 @@ namespace ManageTheGame.Controllers
                 var playerStat = new PlayerStatsRow { 
                     FirstName = player.FirstName,
                     LastName = player.LastName,
-                    Games = stats.Count,
+                    Games = 0,
                     Goals = 0,
                     Assists = 0,
                     MVP = 0,
@@ -93,6 +93,7 @@ namespace ManageTheGame.Controllers
                     switch (stat.Type)
                     {
                         case 1:
+                            playerStat.Games++;
                             break;
                         case 2:
                             playerStat.Goals++;
@@ -107,7 +108,7 @@ namespace ManageTheGame.Controllers
                             playerStat.RedCards++;
                             break;
                         case 6:
-                            playerStat.RedCards++;
+                            playerStat.MVP++;
                             break;
                         default:
                             break;

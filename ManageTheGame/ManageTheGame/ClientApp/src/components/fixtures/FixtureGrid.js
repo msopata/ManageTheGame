@@ -3,6 +3,7 @@
 import DataGrid, { Column, Editing, Lookup, Paging, MasterDetail } from 'devextreme-react/data-grid';
 import { Button } from 'devextreme-react/button'
 import { createStore } from 'devextreme-aspnet-data-nojquery';
+import { FixtureDetails } from "./details/FixtureDetails";
 import { useHistory } from "react-router-dom";
 const url = 'api/Fixture';
 
@@ -29,6 +30,12 @@ export const FixtureGrid = (props) => {
         history.push(`/stats`, e.data);
     }
 
+    const renderDetails = (e) => {
+        return (
+            <FixtureDetails fixtureData={e.data.data} />
+        );
+    }
+
     return (
         <DataGrid
             dataSource={fixturesData}
@@ -52,7 +59,7 @@ export const FixtureGrid = (props) => {
             <Column dataField="away.name" caption="Away"></Column>
             <MasterDetail
                 enabled={true}
-                //component={DetailTemplate} TO DO
+                component={renderDetails}
             />
         </DataGrid>
     );

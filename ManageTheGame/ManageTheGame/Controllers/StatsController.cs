@@ -43,7 +43,7 @@ namespace ManageTheGame.Controllers
                 };
             }
 
-            return stats;
+            return stats.OrderBy(x => x.Minute).ThenBy(x => x.Type);
         }
 
         [HttpPost("[action]")]
