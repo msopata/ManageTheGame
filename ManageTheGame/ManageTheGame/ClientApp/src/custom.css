@@ -12,3 +12,8 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+body {
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,1) 43%, rgba(61,235,211,1) 91%);
+}

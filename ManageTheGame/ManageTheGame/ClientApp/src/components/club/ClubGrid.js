@@ -1,6 +1,7 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, { Column, Editing, Popup } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Editing, Popup, RequiredRule } from 'devextreme-react/data-grid';
+import { ContentCard } from '../common/ContentCard';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 import { useHistory } from 'react-router-dom';
 
@@ -26,23 +27,36 @@ export const ClubGrid = () => {
     }
 
     return (
-        <DataGrid
-            dataSource={clubData}
-            focusedRowEnabled={true}
-            onRowDblClick={onRowDblClick}
-            onRowUpdating={onRowUpdating}
-            showBorders={true}>
-            <Editing
-                mode="popup"
-                allowAdding={true}
-                allowUpdating={true}
-                allowDeleting={true}
-                useIcons={true} />
-            <Column dataField="name"></Column>
-            <Column dataField="abbreviation"></Column>
-            <Column dataField="founded" dataType="date" format="yyyy/MM/dd"></Column>
-            <Column dataField="description"></Column>
-        </DataGrid>
+        <ContentCard title="Clubs">
+            <DataGrid
+                dataSource={clubData}
+                focusedRowEnabled={true}
+                onRowDblClick={onRowDblClick}
+                onRowUpdating={onRowUpdating}
+                showBorders={true}>
+                <Editing
+                    mode="popup"
+                    allowAdding={true}
+                    allowUpdating={true}
+                    allowDeleting={true}
+                    useIcons={true}>
+                    <Popup
+                        width={600}
+                        height={'auto'}
+                        showTitle={true}
+                        title="Add/Edit Club"
+                    />
+                </Editing>
+                <Column dataField="name">
+                    <RequiredRule />
+                </Column>
+                <Column dataField="abbreviation">
+                    <RequiredRule />
+                </Column>
+                <Column dataField="founded" dataType="date" format="yyyy/MM/dd"></Column>
+                <Column dataField="description"></Column>
+            </DataGrid>
+        </ContentCard>
     );
 }
 

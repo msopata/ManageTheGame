@@ -14,10 +14,9 @@ import { StatsGrid } from './components/stats/StatsGrid';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
-
 import 'devextreme/dist/css/dx.common.css';
-//import 'devextreme/dist/css/dx.light.css';
 import './themes/dx.generic.dark-moon-scheme.css';
+import './custom.css';
 
 export default class App extends Component {
   static displayName = App.name;
