@@ -1,16 +1,17 @@
-﻿.squad-tab-main {
+﻿.fixture-tab-main {
     display: flex;
     background-color: #465672;
     justify-content: center;
+    max-height: 500px;
 }
 
 
-.squad-tab-left {
+.fixture-tab-left {
     flex: 1;
     margin-left: 100px;
 }
 
-.squad-tab-right {
+.fixture-tab-right {
     margin-left: 50px;
     flex: 1;
 }

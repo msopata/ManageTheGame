@@ -1,8 +1,7 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, { Column, Lookup, Editing } from 'devextreme-react/data-grid';
-import './StatsTabs.css';
-//const picUrl = '../../../res/ball.png';
+import DataGrid, { Column, Lookup, Editing, Scrolling, Popup, RequiredRule, RangeRule } from 'devextreme-react/data-grid';
+import './FixtureDetails.css';
 
 export const FixtureDetails = (props) => {
     const [stats, setStats] = useState({ home: [], away: [] });
@@ -39,30 +38,30 @@ export const FixtureDetails = (props) => {
     }
 
     return (
-        <div className='squad-tab-main'>
-            <div className='squad-tab-left'>
+        <div className='fixture-tab-main'>
+            <div className='fixture-tab-left'>
                 <h1>{props.fixtureData.home.name}</h1>
                 <DataGrid
                     dataSource={stats.home}
                     width={'70%'}
-                    height={ 500 }
                     showColumnLines={false}
                     showColumnHeaders={false}
                     noDataText="">
+                    <Scrolling />
                     <Column dataField="minute" calculateDisplayValue={fixMinutesDisplay}></Column>
                     <Column dataField="player.lastName" caption="Player" alignment="right"></Column>
                     <Column dataField="type" caption="icon" cellRender={cellRender}></Column>
                 </DataGrid>
             </div>
-            <div className='squad-tab-right'>
+            <div className='fixture-tab-right'>
                 <h1>{props.fixtureData.away.name}</h1>
                 <DataGrid
                     dataSource={stats.away}
                     noDataText=""
                     showColumnLines={false}
                     showColumnHeaders={false}
-                    height={500}
                     width={'70%'}>
+                    <Scrolling />
                     <Column dataField="type" caption="icon" cellRender={cellRender}></Column>
                     <Column dataField="player.lastName" caption="Player"></Column>
                     <Column dataField="minute" calculateDisplayValue={fixMinutesDisplay}></Column>

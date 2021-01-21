@@ -11,7 +11,10 @@ export const CompetitionDetails = (props) => {
 
     return (
         (props.location.state.started) ?
-            <CompetitionStarted competitionId={props.location.state.id} teamCount={props.location.state.teamCount} /> :
+            <CompetitionStarted
+                competitionId={props.location.state.id}
+                teamCount={props.location.state.teamCount}
+                competitionName={props.location.state.name} /> :
             <CompetitionStartup competitionId={props.location.state.id} />
     );
 }

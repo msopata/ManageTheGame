@@ -2,7 +2,8 @@
     display: flex;
     background-color: #465672;
     justify-content: center;
-    height: 100vh;
+    height: 100%;
+    padding: 10px;
 }
 
 

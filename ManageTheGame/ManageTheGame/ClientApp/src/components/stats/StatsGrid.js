@@ -4,6 +4,7 @@ import DataGrid, { Column, Editing, Lookup, Paging, MasterDetail } from 'devextr
 import TabPanel from 'devextreme-react/tab-panel'
 import { SquadTab } from './tabs/SquadTab';
 import { StatisticsTab } from './tabs/StatisticsTab';
+import { ContentCard } from '../common/ContentCard';
 const url = 'api/Stats';
 
 export const StatsGrid = (props) => {
@@ -58,11 +59,11 @@ export const StatsGrid = (props) => {
 
     return (
 
-        <div>
+        <ContentCard title="Statistics">
             <TabPanel
                 dataSource={['Squads', 'Game facts']}
                 itemComponent={renderTab}
             />
-        </div>
+        </ContentCard>
     );
 }

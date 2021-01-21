@@ -37,7 +37,7 @@ export const CompetitionStarted = (props) => {
     return (
 
         <div>
-            <ContentCard>
+            <ContentCard title={ props.competitionName}>
                 <TabPanel
                     dataSource={['Standings', 'Fixtures', 'Stats']}
                     itemComponent={renderTab}
