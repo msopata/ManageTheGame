@@ -1,6 +1,6 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, { Column, Lookup, Editing } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Lookup, Editing, RangeRule, RequiredRule } from 'devextreme-react/data-grid';
 
 export const StatisticsTab = (props) => {
     const [homePlayers, setHomePlayers] = useState({ lookup: [], datasource: [] });
@@ -79,6 +79,7 @@ export const StatisticsTab = (props) => {
                         allowDeleting={true}
                         useIcons={true} />
                     <Column dataField="playerId" caption="Player" displayExpr="lastName">
+                        <RequiredRule />
                         <Lookup
                             dataSource={homePlayers.lookup}
                             valueExpr="id"
@@ -86,13 +87,16 @@ export const StatisticsTab = (props) => {
                         />
                     </Column>
                     <Column dataField="type">
+                        <RequiredRule />
                         <Lookup
                             dataSource={lookupItems}
                             valueExpr="value"
                             displayExpr="text"
                         />
                     </Column>
-                    <Column dataField="minute" width={50} dataType="Number" caption="Min." alignment="center"></Column>
+                    <Column dataField="minute" width={50} dataType="Number" caption="Min." alignment="center">
+                        <RangeRule min={0} max={90} />
+                    </Column>
                 </DataGrid>
             </div>
             <div className='squad-tab-right'>
@@ -108,6 +112,7 @@ export const StatisticsTab = (props) => {
                         allowDeleting={true}
                         useIcons={true} />
                     <Column dataField="playerId" caption="Player" displayExpr="lastName">
+                        <RequiredRule />
                         <Lookup
                             dataSource={awayPlayers.lookup}
                             valueExpr="id"
@@ -115,13 +120,16 @@ export const StatisticsTab = (props) => {
                         />
                     </Column>
                     <Column dataField="type">
+                        <RequiredRule />
                         <Lookup
                             dataSource={lookupItems}
                             valueExpr="value"
                             displayExpr="text"
                         />
                     </Column>
-                    <Column dataField="minute" width={50} dataType="Number" caption="Min." alignment="center"></Column>
+                    <Column dataField="minute" width={50} dataType="Number" caption="Min." alignment="center">
+                        <RangeRule min={0} max={90} />
+                    </Column>
                 </DataGrid>
             </div>
         </div>

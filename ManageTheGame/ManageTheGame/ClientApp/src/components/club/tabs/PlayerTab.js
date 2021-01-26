@@ -1,9 +1,7 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, { Column, Paging, Editing } from 'devextreme-react/data-grid';
-import { Button } from 'devextreme-react/button'
+import DataGrid, { Column, Editing, Popup, RequiredRule, RangeRule } from 'devextreme-react/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
-import { useHistory } from "react-router-dom";
 const url = 'api/Player';
 
 export const PlayerTab = (props) => {
@@ -26,12 +24,27 @@ export const PlayerTab = (props) => {
                 allowAdding={true}
                 allowUpdating={true}
                 allowDeleting={true}
-                useIcons={true} />
-            <Column dataField="firstName"></Column>
-            <Column dataField="lastName"></Column>
+                useIcons={true}>
+                <Popup
+                    width={600}
+                    height={'auto'}
+                    showTitle={true}
+                    title="Add/Edit Player"
+                />
+            </Editing>
+            <Column dataField="firstName">
+                <RequiredRule />
+            </Column>
+            <Column dataField="lastName">
+                <RequiredRule />
+            </Column>
             <Column dataField="birth" caption="Date" dataType="date" format="yyyy/MM/dd" width={200}></Column>
-            <Column dataField="number"></Column>
-            <Column dataField="height"></Column>
+            <Column dataField="number">
+                <RequiredRule />
+            </Column>
+            <Column dataField="height">
+                <RangeRule min={1} />
+            </Column>
             <Column dataField="nationality"></Column>
         </DataGrid>
     );

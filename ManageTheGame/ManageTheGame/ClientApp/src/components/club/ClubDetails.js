@@ -3,6 +3,7 @@ import TabPanel from 'devextreme-react/tab-panel'
 import { FixtureTab } from './tabs/FixtureTab'
 import { PlayerTab } from './tabs/PlayerTab';
 import { StatsTab } from './tabs/StatsTab';
+import { ContentCard } from '../common/ContentCard';
 //const url = 'api/CompetitionCLub';
 
 export const ClubDetails = (props) => {
@@ -31,11 +32,11 @@ export const ClubDetails = (props) => {
 
     return (
 
-        <div>
+        <ContentCard title={props.location.state.name}>
             <TabPanel
                 dataSource={['Players', 'Fixtures', 'Stats']}
                 itemComponent={renderTab}
             />
-        </div>
+        </ContentCard>
     );
 }

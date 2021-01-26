@@ -1,6 +1,6 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 //import authService from './api-authorization/AuthorizeService';
-import DataGrid, { Column, Lookup, Editing } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Lookup, Editing, RequiredRule } from 'devextreme-react/data-grid';
 import './StatsTabs.css';
 
 export const SquadTab = (props) => {
@@ -36,6 +36,7 @@ export const SquadTab = (props) => {
     }
 
     const onRowInserting = (e) => {
+        //TO DO add player number
         e.data.type = 1;
     }
 
@@ -76,6 +77,7 @@ export const SquadTab = (props) => {
                         allowDeleting={true}
                         useIcons={true} />
                     <Column dataField="playerId" caption="Player" displayExpr="lastName">
+                        <RequiredRule />
                         <Lookup
                             dataSource={homePlayers.lookup}
                             valueExpr="id"
@@ -101,6 +103,7 @@ export const SquadTab = (props) => {
                         allowDeleting={true}
                         useIcons={true} />
                     <Column dataField="playerId" caption="Player" displayExpr="lastName">
+                        <RequiredRule />
                         <Lookup
                             dataSource={awayPlayers.lookup}
                             valueExpr="id"

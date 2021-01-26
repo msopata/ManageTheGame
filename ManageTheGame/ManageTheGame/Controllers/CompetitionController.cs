@@ -92,6 +92,71 @@ namespace ManageTheGame.Controllers
             return Ok();
         }
 
+        [HttpGet("[action]/{Id}")]
+        public IEnumerable<PlayerStatsRow> GetCompetitionStats(Guid Id)
+        {
+            var clubs = _context.CompetitionClubs.Where(x => x.CompetitionId == Id);
+            var players = new List<Player>();
+            foreach(var club in clubs)
+            {
+                var clubPlayers = _context.Players.Where(x => x.ClubId == club.ClubId);
+                foreach(var player in clubPlayers)
+                {
+                    var clubName = _context.Clubs.Where(x => x.Id == club.ClubId).First().Name;
+                    player.Club = new Club { 
+                        Name = clubName
+                    };
+                    players.Add(player);
+                }
+                    
+            }
+            
+            var playerStatsList = new List<PlayerStatsRow>();
+            foreach (var player in players)
+            {
+                var stats = _context.Stats.Where(x => x.PlayerId == player.Id).ToList();
+                var playerStat = new PlayerStatsRow
+                {
+                    FirstName = player.FirstName,
+                    LastName = player.LastName,
+                    ClubName = player.Club.Name, 
+                    Games = 0,
+                    Goals = 0,
+                    Assists = 0,
+                    MVP = 0,
+                    YellowCards = 0,
+                    RedCards = 0
+                };
+                foreach (var stat in stats)
+                    switch (stat.Type)
+                    {
+                        case 1:
+                            playerStat.Games++;
+                            break;
+                        case 2:
+                            playerStat.Goals++;
+                            break;
+                        case 3:
+                            playerStat.Assists++;
+                            break;
+                        case 4:
+                            playerStat.YellowCards++;
+                            break;
+                        case 5:
+                            playerStat.RedCards++;
+                            break;
+                        case 6:
+                            playerStat.MVP++;
+                            break;
+                        default:
+                            break;
+                    }
+
+                playerStatsList.Add(playerStat);
+            }
+            return playerStatsList.OrderByDescending(x => x.Goals).ThenBy(x => x.Assists);
+        }
+
         [HttpPut("[action]/{id}")]
         public async Task<IActionResult> UpdateCompetitionStart(Guid id)
         {

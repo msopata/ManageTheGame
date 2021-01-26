@@ -15,5 +15,6 @@ namespace ManageTheGame.Models
         public int Assists { get; set; }
         public int YellowCards { get; set; }
         public int RedCards { get; set; }
+        public string ClubName { get; set; }
     }
 }

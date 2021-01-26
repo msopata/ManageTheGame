@@ -2,6 +2,7 @@
 import TabPanel from 'devextreme-react/tab-panel'
 import { FixtureGrid } from '../fixtures/FixtureGrid'
 import { StandingsGrid } from '../standings/StandingsGrid'
+import { StatsTab } from './tabs/StatsTab'
 import { ContentCard } from '../common/ContentCard';
 //const url = 'api/CompetitionCLub';
 
@@ -27,8 +28,10 @@ export const CompetitionStarted = (props) => {
                 );
             case 2:
                 return (
-                   <div>
-                        "Stats"
+                    <div>
+                        <StatsTab
+                            competitionId={props.competitionId}
+                        />
                    </div>
                 );
         }

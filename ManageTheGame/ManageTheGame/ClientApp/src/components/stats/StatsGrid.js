@@ -19,8 +19,6 @@ export const StatsGrid = (props) => {
         const response = await fetch(`${url}/GetFixtureStats/${fixtureId}`);
         const data = await response.json();
         const squads = data.filter(x => x.type == 1);
-        console.log("data", data);
-        console.log("squads", squads);
         setSquadsData(squads);
         const stats = data.filter(x => x.type > 1);
         setStatsData(stats);
