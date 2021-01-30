@@ -4,29 +4,35 @@ import DataGrid, { Column, Editing, Lookup } from 'devextreme-react/data-grid';
 import { Button } from 'devextreme-react/button'
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 import { useHistory } from "react-router-dom";
-import { data } from 'jquery';
+import { ContentCard } from '../common/ContentCard';
 //const url = 'api/CompetitionCLub';
 
 export const CompetitionStartup = (props) => {
     let dataGridRef = useRef();
     const [competition, setCompetition] = useState({});
+    const [clubLookupData, setClubLookupData] = useState({});
+    const [clubAddition, setClubAddition] = useState(false);
 
     useEffect(() => {
         loadCompetitionDetails();
+    }, [clubAddition]);
+
+    useEffect(() => {
+        loadClubData();
     }, []);
 
 
-    const clubLookupData = createStore({
-        key: 'id',
-        loadUrl: `api/Club/Get`,
-    });
+    const loadClubData = async () => {
+        const response = await fetch(`api/Club/Get`);
+        const data = await response.json();
+        setClubLookupData(data);
+    }
 
     const loadCompetitionDetails = async () => {
         //const token = await authService.getAccessToken();
         const response = await fetch(`api/Competition/GetCompetitionDetails/${props.competitionId}`);
         const data = await response.json();
         setCompetition(data);
-        console.log(competition);
     }
 
     const onRowInserting = (e) => {
@@ -38,7 +44,7 @@ export const CompetitionStartup = (props) => {
     }
 
     const onRowInserted = (e) => {
-        setTimeout(e.component.refresh, 1000);
+        setTimeout(() => setClubAddition(!clubAddition), 1000);
     }
 
     const startCompetition = async (competitionId) => {
@@ -69,22 +75,22 @@ export const CompetitionStartup = (props) => {
 
     return (
 
-        <div>
-            {competition.name}<br />
-            {competition.clubs &&
-                `Number of teams: ${competition.clubs.length} out of ${competition.teamCount}`
-            }
+        <ContentCard title={competition.name}>
+            <div style={{ color: "white"}}>
+                {competition.clubs && `Teams selected: ${competition.clubs.length} out of ${competition.teamCount}`}
+            </div>
+            <br/>
             <DataGrid
                 ref={ref => dataGridRef = ref}
                 dataSource={competition.clubs}
                 keyExpr="id"
-                width={500}
-                onRowInserted={onRowInserted}
+                width={'50%'}
                 focusedRowEnabled={true}
                 onRowInserting={onRowInserting}
+                onRowInserted={onRowInserted}
                 showBorders={true}>
                 <Editing
-                    allowAdding={true}
+                    allowAdding={competition.clubs && competition.clubs.length != competition.teamCount}
                     allowDeleting={true}
                     useIcons={true} />
                 <Column dataField="id" caption="Name" displayExpr="name">
@@ -97,7 +103,7 @@ export const CompetitionStartup = (props) => {
                 <Column dataField="abbreviation"></Column>
             </DataGrid>
             <br />
-            <Button onClick={onCompetitionStartBtnClick} text="Draw fixtures and start" useSubmitBehavior={true} />
-        </div>
+            <Button onClick={onCompetitionStartBtnClick} text="Draw fixtures and start" useSubmitBehavior={true} disabled={competition.clubs && competition.clubs.length != competition.teamCount} />
+        </ContentCard>
     );
 }

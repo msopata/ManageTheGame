@@ -54,7 +54,7 @@ export const CompetitionGrid = () => {
                     mode="popup"
                     allowAdding={true}
                     allowUpdating={true}
-                    allowDeleting={true}
+                    allowDeleting={(e) => !e.row.data.started}
                     useIcons={true}>
                     <Popup
                         width={600}

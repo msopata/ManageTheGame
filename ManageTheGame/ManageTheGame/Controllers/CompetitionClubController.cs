@@ -48,6 +48,7 @@ namespace ManageTheGame.Controllers
             return Ok();
         }
 
+        /*
         [HttpPut("[action]")]
         public IActionResult Update([FromForm] string values)
         {
@@ -62,18 +63,18 @@ namespace ManageTheGame.Controllers
             existingCompetition.ClubId = competition.ClubId;
             _context.SaveChanges();
             return Ok();
-        }
+        }*/
 
         [HttpDelete("[action]")]
         public IActionResult Delete([FromBody] Guid key)
         {
-            var existingCompetition = _context.CompetitionClubs.Where(x => x.Id == key)
+            var cc = _context.CompetitionClubs.Where(x => x.Id == key)
                                                     .FirstOrDefault<CompetitionClub>();
 
-            if (existingCompetition == null)
+            if (cc == null)
                 return NotFound();
 
-            _context.Remove(existingCompetition);
+            _context.Remove(cc);
             _context.SaveChanges();
             return Ok();
         }
