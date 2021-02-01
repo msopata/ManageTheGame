@@ -13,10 +13,15 @@ export const PlayerTab = (props) => {
         deleteUrl: `${url}/Delete`
     });
 
+    const onRowUpdating = (row) => {
+        row.newData = Object.assign({}, row.oldData, row.newData);
+    }
+
     return (
         <DataGrid
             dataSource={playersData}
             keyExpr="id"
+            onRowUpdating={onRowUpdating}
             focusedRowEnabled={true}
             showBorders={true}>
             <Editing

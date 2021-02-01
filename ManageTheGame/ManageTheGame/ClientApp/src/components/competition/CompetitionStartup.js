@@ -84,7 +84,7 @@ export const CompetitionStartup = (props) => {
                 ref={ref => dataGridRef = ref}
                 dataSource={competition.clubs}
                 keyExpr="id"
-                width={'50%'}
+                width={'50%2'}
                 focusedRowEnabled={true}
                 onRowInserting={onRowInserting}
                 onRowInserted={onRowInserted}

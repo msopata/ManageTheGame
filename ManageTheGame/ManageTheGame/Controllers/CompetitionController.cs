@@ -96,6 +96,7 @@ namespace ManageTheGame.Controllers
         public IEnumerable<PlayerStatsRow> GetCompetitionStats(Guid Id)
         {
             var clubs = _context.CompetitionClubs.Where(x => x.CompetitionId == Id);
+            var fixturesIds = _context.Fixtures.Where(x => x.CompetitionId == Id).Select(x => x.Id);
             var players = new List<Player>();
             foreach(var club in clubs)
             {
@@ -127,7 +128,9 @@ namespace ManageTheGame.Controllers
                     YellowCards = 0,
                     RedCards = 0
                 };
-                foreach (var stat in stats)
+                foreach (var stat in stats) {
+                    if (!fixturesIds.Contains(stat.FixtureId)) 
+                        break;
                     switch (stat.Type)
                     {
                         case 1:
@@ -151,6 +154,8 @@ namespace ManageTheGame.Controllers
                         default:
                             break;
                     }
+                }
+                    
 
                 playerStatsList.Add(playerStat);
             }
